@@ -1,2 +1,14 @@
 package com.learning.test_drools;
 
+import com.learning.test_drools.Fact1
+
+rule "rule 1"
+
+    when
+        fact1: com.learning.test_drools.Fact1( quantifier1 > 100 )
+        
+    then
+    
+        fact1.setDescription("mare than 100");
+        
+end
