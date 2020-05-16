@@ -77,4 +77,8 @@ public class Fact2 implements java.io.Serializable {
 		this.idenAlt = idenAlt;
 	}
 
+	public String toString() {
+		return "this is this fact 2 :)";
+	}
+
 }
