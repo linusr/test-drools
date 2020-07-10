@@ -46,4 +46,12 @@ public class Fact1 implements java.io.Serializable {
 		this.description = description;
 	}
 
+	@Override
+	public String toString() {
+		return "Fact1{" +
+				"iden=" + iden +
+				", quantifier1=" + quantifier1 +
+				", description='" + description + '\'' +
+				'}';
+	}
 }

@@ -1,14 +1,55 @@
 package com.learning.test_drools;
 
-import com.learning.test_drools.Fact1
+import com.learning.test_drools.*;
+
+declare IsValid
+    fact2 : Fact2 @key
+end
 
 rule "rule 1"
-
+    agenda-group "ag1"
     when
-        fact1: com.learning.test_drools.Fact1( quantifier1 > 100 )
-        
+        $fact1 : com.learning.test_drools.Fact1( quantifier1 > 100)
     then
-    
-        fact1.setDescription("mare than 100");
-        
+        modify($fact1){setDescription("mare than 100")}
+        System.out.println("executed rule 1 : " + $fact1.getIden());
+end
+
+rule "rule 3" extends "rule 1"
+    agenda-group "ag1"
+    when
+        $fact2: com.learning.test_drools.Fact2( quantifier1 > 100 , subFacts2 contains "st1")
+    then
+        modify($fact1){setDescription("both facts are mare than 100")}
+        insertLogical( new IsValid($fact2) );
+        System.out.println("executed rule 3 :"  + $fact1.getIden());
+end
+
+rule "rule 2"
+    agenda-group "ag1"
+    salience -1
+    when
+        $fact1: com.learning.test_drools.Fact1( iden == 101 )
+    then
+        modify($fact1){setDescription("special fact")}
+        System.out.println("executed rule 2 : "  + $fact1.getIden());
+end
+
+rule "rule 4"
+agenda-group "ag1"
+    when
+        $fact2 : Fact2()
+        IsValid( fact2 == $fact2)
+        $cnt : Integer(intValue > 0) from accumulate( SubFact2($v : val ) from $fact2.intFacts, sum($v))
+    then
+        modify($fact2) { setTotalValue($cnt.intValue()) }
+        System.out.println("yes, it's valid " + $fact2.getIntFacts() + "  ," + $cnt);
+end
+
+rule "Print Fact 2 total"
+//agenda-group "ag1"
+    when
+        $fact : Fact2(totalValue > 0) @watch(totalValue)
+     then
+        System.out.println("Total for Fact 2 is " + $fact.getTotalValue());
 end

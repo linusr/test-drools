@@ -6,3 +6,7 @@ lab_assets/
 .project
 *.zip
 *.log
+
+.idea
+*.iml
+.DS_Store
